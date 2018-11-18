@@ -117,7 +117,7 @@ export default class Programs extends React.Component {
                 }
               }
             >
-            <Icon name={this.state.menu_icon} style={{color:'white'}}/>
+            <Icon name={typeof openDrawer !== 'undefined'? "menu" : "arrow-back"} style={{color:'white'}}/>
             </Button>
           </Left>
           <Body>
@@ -125,16 +125,6 @@ export default class Programs extends React.Component {
           </Body>
         </Header>
         <Content padder>
-					<Card style={styles.mb}>
-						<CardItem bordered>
-							<Left>
-								<Body>
-								<Text style = {styles.dateText}>Monday 06, August 2018</Text>
-								<Text style = {styles.greetingsText}>Good Evening, Olaoluwani</Text>
-								</Body>
-							</Left>
-						</CardItem>
-					</Card>
           <Loader animating={this.state.isLoading} size="large" style={styles.loader} hidesWhenStopped={true} />
           <FlatList
             data={this.state.data}

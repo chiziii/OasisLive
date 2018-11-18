@@ -13,14 +13,14 @@ import {
   Right,
   Badge
 } from "native-base";
-
+import Config from 'LearnBaseApp/Config';
 // import styles from "./styles";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 
-const drawerCover = require("../../../assets/images/drawer-cover.png");
-const drawerImage = require("../../../assets/images/dorcas-logo.png");
+const drawerCover = require("LearnBaseApp/assets/images/drawer-cover.png");
+const drawerImage = require("LearnBaseApp/assets/images/dorcas-logo.png");
 
 const datas = [
   {
@@ -31,32 +31,12 @@ const datas = [
   {
     name: "Courses",
     route: "Courses",
-    icon: "arrow-up"
-  },
-  {
-    name: "Profile",
-    route: "Footer",
-    icon: "arrow-down",
-  },
-  {
-    name: "About",
-    route: "NHAccordion",
-    icon: "repeat"
+    icon: "book"
   },
   {
     name: "Settings",
-    route: "Actionsheet",
-    icon: "easel"
-  },
-  {
-    name: "Feedback",
-    route: "NHBadge",
-    icon: "notifications"
-  },
-  {
-    name: "Logout",
-    route: "Logout",
-    icon: "log-out"
+    route: "Settings",
+    icon: "cog"
   },
 ];
 
@@ -83,8 +63,8 @@ class SideBar extends Component {
         >
           <Image style={styles.drawerCover} source={drawerCover} />
           <Image square style={styles.drawerImage} source={drawerImage} />
-          <Text style={styles.drawerUserName}>Olaoluwani Onafowope</Text>
-          <Text style={styles.drawerUserEmail}>OlaoluwaniOnafowope@gmail.com</Text>
+          <Text style={styles.drawerUserName}>{Config.app_name}</Text>
+          <Text style={styles.drawerUserEmail}></Text>
           <List
             dataArray={datas}
             renderRow={data =>
@@ -141,7 +121,7 @@ const styles = StyleSheet.create({
   drawerImage: {
     position: "absolute",
     left: Platform.OS === "android" ? deviceWidth / 23 : deviceWidth / 22,
-    top: Platform.OS === "android" ? deviceHeight / 18 : deviceHeight / 17,
+    top: Platform.OS === "android" ? deviceHeight / 19 : deviceHeight / 18,
     width: 80,
     height: 80,
     resizeMode: "cover",
@@ -149,7 +129,7 @@ const styles = StyleSheet.create({
   drawerUserName: {
     position: "absolute",
     left: Platform.OS === "android" ? deviceWidth / 23 : deviceWidth / 22,
-    top: Platform.OS === "android" ? deviceHeight / 6.5 : deviceHeight / 5.5,
+    top: Platform.OS === "android" ? deviceHeight / 6 : deviceHeight / 5,
     resizeMode: "cover",
     color: 'white',
     fontWeight: 'bold',
@@ -160,11 +140,11 @@ const styles = StyleSheet.create({
   drawerUserEmail: {
     position: "absolute",
     left: Platform.OS === "android" ? deviceWidth / 23 : deviceWidth / 22,
-    top: Platform.OS === "android" ? deviceHeight / 5.5 : deviceHeight / 4.5,
+    top: Platform.OS === "android" ? deviceHeight / 5 : deviceHeight / 4,
     resizeMode: "cover",
     color: 'white',
     fontWeight: 'bold',
-    width: 210,
+    width: 270,
     height: 75,
   },
   text: {

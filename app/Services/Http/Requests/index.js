@@ -1,12 +1,35 @@
 import axios from 'axios';
 import HTTPMethods from './HTTPMethods';
 import NetworkInfo from 'app/Services/Http/Requests/NetworkInfo';
+import { defaultKeys } from 'app/Utils/DefaultKeys';
+import LBDataStore from 'app/Services/Store';
+import SInfo from 'react-native-sensitive-info';
 
 const _NetworkInfo = new NetworkInfo();
+const _LBDataStore = new LBDataStore();
+
+const options = {
+  sharedPreferencesName: defaultKeys.sharedPreferencesName,
+  keychainService: defaultKeys.keychainService
+}
 
 export default class NetworkRequests {
 
-  _get(endpoint, Method, success, fail){
+  async _getToken(){
+    let response = await SInfo.getItem(defaultKeys.access_token, options);
+    // let token = await response;
+    return response;
+
+  }
+
+  async _getAuthHeader(){
+    token = await this._getToken();
+    return {
+      'authorization': `${defaultKeys.token_type} ${token}`
+    };
+  }
+
+  _get(endpoint, success, fail){
     axios.get(endpoint)
       .then(function (response) {
         // handle success
@@ -15,9 +38,18 @@ export default class NetworkRequests {
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        // alert(error);
         fail(error);
       })
+  }
+
+  async _requestWithConfig(endpoint, Method, payload = {}, headers){
+    let request = await axios({
+      url: endpoint,
+      method: Method,
+      headers: headers,
+    });
+    return request
   }
 
   _post(endpoint, Method, payload, success, fail){
@@ -34,12 +66,14 @@ export default class NetworkRequests {
       })
   }
 
+
+
   request(endpoint, Method, payload = {}, success, fail){
     _NetworkInfo._getInternetStatus();
 
     switch (Method) {
       case HTTPMethods.GET:
-        this._get(endpoint, Method,
+        this._get(endpoint,
           (response) => {
             // return alert('Success data from Requests ===> ' + JSON.stringify(response.data))
             return success(response)

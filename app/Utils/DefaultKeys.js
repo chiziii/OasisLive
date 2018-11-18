@@ -4,5 +4,7 @@ export const defaultKeys = {
     access_token_type: 'Bearer',
     keychainService: 'Learnbase_Keychain',
     sharedPreferencesName: 'Learnbase_SharedPrefrences',
-    programs: '@ProgramsStore:key'
+    programs: '@ProgramsStore:key',
+    token_type: 'Bearer',
+    user: 'user'
 }

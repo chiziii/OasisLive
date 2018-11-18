@@ -48,7 +48,7 @@ export default class Login extends React.Component {
           })
           return this.LBAlert.dismiss(error.validation_error, errMsg)
         }
-        return this.LBAlert.dismiss('Error', "An unexpected error occured!"); 
+        return this.LBAlert.dismiss('Error', "An unexpected error occured!");
       }
     )
   }

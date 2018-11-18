@@ -2,43 +2,85 @@ import React from 'react';
 import { FlatList, ActivityIndicator, Text, View, StyleSheet, } from 'react-native';
 import { Container,Card, CardItem, Icon, Left, Header, Body, Title, Right, Button, Thumbnail} from "native-base";
 import { WebView } from 'react-native';
-import {Loader} from "../../Components/Loader";
+import {Loader} from "app/Components/Loader";
+import LessonsController from "app/Services/Http/Controllers/LessonsController";
+
+const _LessonsController = new LessonsController();
 
 export default class Lessons extends React.Component {
   constructor(props) {
     super(props);
+    this.courseData = this.props.navigation.getParam("data");
     this.state = {
       isLoading: true,
       loading: true,
 			menu_icon: 'ios-menu',
 			default_title: "Lessons",
+      course_data: this.courseData,
+      title: typeof this.courseData !== 'undefined' ? this.courseData.title : 'Lessons',
     }
 
   }
 
+  _closeLoader = () => {
+    this.setState({isLoading: false})
+  }
+
+  _loadFromAPI(){
+    let courseId = typeof this.courseData !== 'undefined' ? this.courseData.uuid : 'none';
+    _LessonsController._getFromAPI(courseId,
+      (done)=>{
+        this._closeLoader();
+        this.setState({
+          data: done
+        });
+      },
+      (error)=>{
+        alert(error);
+        this._closeLoader();
+      }
+    );
+  }
+
+  componentDidMount() {
+    this._loadFromAPI()
+  }
+
   renderItem = ({ item }) => {
-    return (
+    return typeof item.lesson_video_url !== "undefined" && (
       <View>
         <Card>
           <CardItem style={{flex: 1, flexDirection: "column" }} >
-                <WebView
-        source={{uri: item.lesson_video_url}}
-        style={{marginTop: 20,width: 300, height: 200}}
-      />
+            <WebView
+              source={{uri: item.lesson_video_url}}
+              style={{marginTop: 20,width: 300, height: 200}}
+            />
+          </CardItem>
+        </Card>
+        <Card>
+          <CardItem bordered>
             <View style={styles.textView}>
-              <Text>
-                {"Title: " + item.title}
-              </Text>
-              <Text>
-                {"Course: " +  item.course}
-              </Text>
-              <Text >
-                {"Lesson Type: " + item.lesson_type}
-              </Text>
-              <Text>
-                {"Date: " + item.created_at}
+              <Text style={{fontSize: 30, fontWeight: "bold"}}>
+                {item.title}
               </Text>
             </View>
+          </CardItem>
+          <CardItem>
+            <View style={styles.textView}>
+              <Text style={{fontSize: 20, fontWeight: "bold"}}>
+                {item.course}
+              </Text>
+            </View>
+          </CardItem>
+          <CardItem>
+          <View style={styles.textView}>
+            <Text style={{fontSize: 15, fontWeight: "bold"}}>
+              {item.lesson_type}
+            </Text>
+            <Text style={{fontSize: 15, fontWeight: "bold"}}>
+              {item.created_at}
+            </Text>
+          </View>
           </CardItem>
         </Card>
       </View>
@@ -53,28 +95,7 @@ export default class Lessons extends React.Component {
   //   )
   // }
 
-  componentDidMount() {
-    // return fetch('https://learnbase.com.ng/api/lessons?course_uuid=f2da82ca-8ea8-11e8-9913-0a831060a042')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //
-    //     this.setState({
-    //       isLoading: false,
-    //       dataSource: responseJson.data
-    //     }, function () {
-    //
-    //     });
-    //
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //     this.setState({
-    //       isLoading: false,
-    //     }, function () {
-    //
-    //     });
-    //   });
-  }
+
 
   render() {
     const { navigation } = this.props;
@@ -99,7 +120,7 @@ export default class Lessons extends React.Component {
         </Header>
         <Loader animating={this.state.isLoading} size="large" style={styles.loader} hidesWhenStopped={true} />
         <FlatList
-          data={this.state.dataSource}
+          data={this.state.data}
           renderItem={this.renderItem}
           keyExtractor={({id}, index) => id}
           // ItemSeparatorComponent={this.itemSeparator}
@@ -112,28 +133,27 @@ export default class Lessons extends React.Component {
 const styles = StyleSheet.create({
 
   MainContainer: {
-
     flex: 1,
     flexDirection: 'column'
-
   },
-
   imageView: {
-
     width: 300,
     height: 100,
     margin: 7,
     borderRadius: 7
-
   },
-
+  dateText: {
+		fontSize: 15,
+	},
+	greetingsText: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: '#333333',
+		marginTop: 5,
+	},
   textView: {
-
-    padding: 4,
     color: '#000',
-    textAlign: "left",
-    marginLeft: 0
-
-  }
-
+    textAlign: 'left',
+    fontWeight: "bold",
+  },
 });

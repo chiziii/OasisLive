@@ -14,6 +14,7 @@ import Programs from './Views/Programs';
 import Courses from './Views/Courses';
 import Lessons from './Views/Lessons';
 import SideBar from "./Views/Sidebar";
+import Settings from './Views/Settings';
 //Auth
 import AuthLoading from "./Views/Auth/AuthLoading";
 import Login from './Views/Auth/Login';
@@ -23,10 +24,10 @@ import Logout from './Views/Auth/Logout';
 
 const Drawer = createDrawerNavigator(
   {
-    Programs: Programs
+    Courses: Courses
   },
   {
-    initialRouteName: "Programs",
+    initialRouteName: "Courses",
     contentOptions: {
       activeTintColor: "#e91e63"
     },
@@ -54,6 +55,7 @@ const MainStack = createStackNavigator(
     Programs: Programs,
     Courses: Courses,
     Lessons: Lessons,
+    Settings:Settings,
     Logout: Logout,
     Drawer: {
       screen: Drawer

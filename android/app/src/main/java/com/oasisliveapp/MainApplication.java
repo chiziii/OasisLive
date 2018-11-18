@@ -1,4 +1,4 @@
-package com.learnbaseapp;
+package com.oasisliveapp;
 
 import android.app.Application;
 

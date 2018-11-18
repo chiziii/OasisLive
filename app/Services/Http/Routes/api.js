@@ -3,5 +3,7 @@ export default api = {
 	REGISTER: 'register',
   COURSES: 'courses',
   COMPANIES: 'companies',
-  PROGRAMS: 'programs'
+  PROGRAMS: 'programs',
+  LESSONS: 'lessons',
+  USER: 'user',
 };

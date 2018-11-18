@@ -15,7 +15,11 @@ const lbDataStore = new LBDataStore();
 export default class CoursesController {
 
   _getFromAPI(program_id, success, fail){
-    const login_url = `${Config.api_base_url}${api.COURSES}?program_uuid=${program_id}`;
+    var query = `?program_uuid=${program_id}`;
+    if (program_id === 'none') {
+      query = `?company_uuid=${Config.company_id}`;
+    }
+    const login_url = `${Config.api_base_url}${api.COURSES}${query}`;
     try {
       _NetworkRequests.request(login_url, HTTPMethods.GET, {},
         (response) => {
